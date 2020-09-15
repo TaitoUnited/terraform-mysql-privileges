@@ -49,7 +49,7 @@ mysql1:
   # privileges
   roles:
     - name: my_project_admin
-      privileges:
+      permissions:
         - database: my_project_database
           type: table
           privileges: ["ALL"]
@@ -57,14 +57,14 @@ mysql1:
           type: sequence
           privileges: ["ALL"]
     - name: my_project_support
-      privileges:
+      permissions:
         - database: my_project_database
           type: table
           privileges: ["SELECT", "UPDATE"]
   users:
     - name: john.doe
       roles: [ "my_project_support" ]
-      privileges:
+      permissions:
         - database: another_database
           type: table
           privileges: ["SELECT"]
@@ -77,7 +77,7 @@ mysql2:
   # privileges
   users:
     - name: john.doe
-      privileges:
+      permissions:
         - database: some_database
           type: table
           privileges: ["SELECT"]

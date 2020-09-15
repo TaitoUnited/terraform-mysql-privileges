@@ -14,20 +14,19 @@
  * limitations under the License.
  */
 
-resource "mysql_grant" "permission" {
-  depends_on  = [ mysql_role.user ]
-  count       = length(local.permissions)
-  database    = local.permissions[count.index].database
-  role        = local.permissions[count.index].role
-  object_type = local.permissions[count.index].type
-  privileges  = local.permissions[count.index].privileges
+resource "mysql_grant" "role_permission" {
+  depends_on  = [ mysql_role.role ]
+  count       = length(local.rolePermissions)
+  database    = local.rolePermissions[count.index].database
+  role        = local.rolePermissions[count.index].role
+  privileges  = local.rolePermissions[count.index].privileges
 }
 
-resource "mysql_grant" "connect_permission" {
-  depends_on  = [ mysql_role.user ]
-  count       = length(local.connectprivileges)
-  database    = local.connectprivileges[count.index].database
-  role        = local.connectprivileges[count.index].role
-  object_type = "database"
-  privileges  = [ "CONNECT" ]
+resource "mysql_grant" "user_permission" {
+  depends_on  = [ mysql_user.user ]
+  count       = length(local.userPermissions)
+  database    = local.userPermissions[count.index].database
+  user        = local.userPermissions[count.index].user
+  privileges  = local.userPermissions[count.index].privileges
+  roles       = local.userPermissions[count.index].roles
 }

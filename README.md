@@ -51,23 +51,20 @@ mysql1:
     - name: my_project_admin
       permissions:
         - database: my_project_database
-          type: table
           privileges: ["ALL"]
         - database: my_project_database
-          type: sequence
           privileges: ["ALL"]
     - name: my_project_support
       permissions:
         - database: my_project_database
-          type: table
           privileges: ["SELECT", "UPDATE"]
   users:
     - name: john.doe
-      roles: [ "my_project_support" ]
       permissions:
         - database: another_database
-          type: table
           privileges: ["SELECT"]
+        - database: some_database
+          roles: [ "my_project_support" ]
 
 mysql2:
   host: 127.127.127.127
@@ -79,7 +76,6 @@ mysql2:
     - name: john.doe
       permissions:
         - database: some_database
-          type: table
           privileges: ["SELECT"]
 ```
 

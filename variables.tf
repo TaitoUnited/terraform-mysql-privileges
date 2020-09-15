@@ -23,8 +23,6 @@ variable "privileges" {
       name = string
       permissions = list(object({
         database = string
-        schema = string
-        type = string
         privileges = list(string)
       }))
     }))
@@ -33,8 +31,6 @@ variable "privileges" {
       roles = list(string)
       permissions = list(object({
         database = string
-        schema = string
-        type = string
         privileges = list(string)
       }))
     }))

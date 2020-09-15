@@ -17,7 +17,6 @@
 resource "mysql_role" "role" {
   count       = length(local.roles)
   name        = local.roles[count.index].name
-  login       = false
 }
 
 resource "random_string" "user_password" {
@@ -28,18 +27,15 @@ resource "random_string" "user_password" {
   upper   = true
 
   keepers = {
-    username          = local.users[count.index].username
+    username = local.users[count.index].name
   }
 }
 
-resource "mysql_role" "user" {
+resource "mysql_user" "user" {
   depends_on  = [ mysql_role.role ]
   count       = length(local.users)
 
-  name        = local.users[count.index].name
-  roles       = local.users[count.index].roles
-  login       = true
-  password    = random_string.user_password[count.index].result
-  /* TODO: valid_until */
-  connection_limit = 5
+  user        = local.users[count.index].name
+  # roles     = local.users[count.index].roles
+  plaintext_password = random_string.user_password[count.index].result
 }

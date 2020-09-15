@@ -1,6 +1,6 @@
-# MySQL permissions
+# MySQL privileges
 
-Terraform module for managing MySQL cluster permissions. Example usage with two MySQL clusters:
+Terraform module for managing MySQL cluster privileges. Example usage with two MySQL clusters:
 
 ```
 locals {
@@ -23,18 +23,18 @@ provider "mysql" {
   password        = var.mysql2_password
 }
 
-module "mysql1_permissions" {
-  source                     = "TaitoUnited/permissions/mysql"
+module "mysql1_privileges" {
+  source                     = "TaitoUnited/privileges/mysql"
   version                    = "1.0.0"
   provider                   = "mysql.mysql1"
-  permissions                = databases["mysql1"]
+  privileges                 = databases["mysql1"]
 }
 
-module "mysql2_permissions" {
-  source                     = "TaitoUnited/permissions/mysql"
+module "mysql2_privileges" {
+  source                     = "TaitoUnited/privileges/mysql"
   version                    = "1.0.0"
   provider                   = "mysql.mysql2"
-  permissions                = databases["mysql2"]
+  privileges                 = databases["mysql2"]
 }
 ```
 
@@ -46,10 +46,10 @@ mysql1:
   port: 5432
   adminUsername: mysql
 
-  # Permissions
+  # privileges
   roles:
     - name: my_project_admin
-      permissions:
+      privileges:
         - database: my_project_database
           type: table
           privileges: ["ALL"]
@@ -57,14 +57,14 @@ mysql1:
           type: sequence
           privileges: ["ALL"]
     - name: my_project_support
-      permissions:
+      privileges:
         - database: my_project_database
           type: table
           privileges: ["SELECT", "UPDATE"]
   users:
     - name: john.doe
       roles: [ "my_project_support" ]
-      permissions:
+      privileges:
         - database: another_database
           type: table
           privileges: ["SELECT"]
@@ -74,10 +74,10 @@ mysql2:
   port: 5432
   adminUsername: mysql
 
-  # Permissions
+  # privileges
   users:
     - name: john.doe
-      permissions:
+      privileges:
         - database: some_database
           type: table
           privileges: ["SELECT"]

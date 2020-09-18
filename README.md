@@ -9,16 +9,14 @@ locals {
 
 provider "mysql" {
   alias           = "mysql1"
-  host            = databases["mysql1"].host
-  port            = databases["mysql1"].port
+  endpoint        = "$(databases["mysql1"].host}:${databases["mysql1"].port}"
   username        = databases["mysql1"].adminUsername
   password        = var.mysql1_password
 }
 
 provider "mysql" {
   alias           = "mysql2"
-  host            = databases["mysql2"].host
-  port            = databases["mysql2"].port
+  endpoint        = "$(databases["mysql2"].host}:${databases["mysql2"].port}"
   username        = databases["mysql2"].adminUsername
   password        = var.mysql2_password
 }
@@ -26,14 +24,20 @@ provider "mysql" {
 module "mysql1_privileges" {
   source                     = "TaitoUnited/privileges/mysql"
   version                    = "1.0.0"
-  provider                   = "mysql.mysql1"
+  providers = {
+    mysql = mysql.mysql1
+  }
+
   privileges                 = databases["mysql1"]
 }
 
 module "mysql2_privileges" {
   source                     = "TaitoUnited/privileges/mysql"
   version                    = "1.0.0"
-  provider                   = "mysql.mysql2"
+  providers = {
+    mysql = mysql.mysql2
+  }
+
   privileges                 = databases["mysql2"]
 }
 ```

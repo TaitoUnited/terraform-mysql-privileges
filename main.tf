@@ -15,11 +15,11 @@
  */
 
 locals {
-  roles = try(var.privileges.roles, [])
-  users = try(var.privileges.users, [])
+  roles = var.privileges.roles != null ? var.privileges.roles : []
+  users = var.privileges.users != null ? var.privileges.users : []
 
   rolePermissions = flatten([
-    for role in keys(local.roles): [
+    for role in local.roles: [
       for permission in try(role.permissions, []):
       merge(permission, {
         role = role.name
@@ -28,7 +28,7 @@ locals {
   ])
 
   userPermissions = flatten([
-    for user in keys(local.users): [
+    for user in local.users: [
       for permission in try(user.permissions, []):
       merge(permission, {
         user = user.name

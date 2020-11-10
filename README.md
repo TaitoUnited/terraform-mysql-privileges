@@ -63,7 +63,7 @@ mysql1:
         - database: my_project_database
           privileges: ["SELECT", "UPDATE"]
   users:
-    - name: john.doe
+    - name: john_doe
       permissions:
         - database: another_database
           privileges: ["SELECT"]
@@ -77,7 +77,7 @@ mysql2:
 
   # privileges
   users:
-    - name: john.doe
+    - name: john_doe
       permissions:
         - database: some_database
           privileges: ["SELECT"]

@@ -15,27 +15,27 @@
  */
 
 resource "mysql_role" "role" {
-  count       = length(local.roles)
-  name        = local.roles[count.index].name
+  for_each    = {for item in local.roles: item.name => item}
+  name        = each.value.name
 }
 
 resource "random_string" "user_password" {
-  count    = length(local.users)
+  for_each = {for item in local.users: item.name => item}
 
   length  = 32
   special = false
   upper   = true
 
   keepers = {
-    username = local.users[count.index].name
+    username = each.value.name
   }
 }
 
 resource "mysql_user" "user" {
   depends_on  = [ mysql_role.role ]
-  count       = length(local.users)
+  for_each    = {for item in local.users: item.name => item}
 
-  user        = local.users[count.index].name
-  # roles     = local.users[count.index].roles
-  plaintext_password = random_string.user_password[count.index].result
+  user        = each.value.name
+  # roles     = each.value.roles
+  plaintext_password = random_string.user_password[each.key].result
 }

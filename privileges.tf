@@ -16,17 +16,17 @@
 
 resource "mysql_grant" "role_permission" {
   depends_on  = [ mysql_role.role ]
-  count       = length(local.rolePermissions)
-  database    = local.rolePermissions[count.index].database
-  role        = local.rolePermissions[count.index].role
-  privileges  = local.rolePermissions[count.index].privileges
+  for_each    = {for item in local.rolePermissions: item.key => item}
+  database    = each.value.database
+  role        = each.value.role
+  privileges  = each.value.privileges
 }
 
 resource "mysql_grant" "user_permission" {
   depends_on  = [ mysql_user.user ]
-  count       = length(local.userPermissions)
-  database    = local.userPermissions[count.index].database
-  user        = local.userPermissions[count.index].user
-  privileges  = local.userPermissions[count.index].privileges
-  roles       = local.userPermissions[count.index].roles
+  for_each    = {for item in local.userPermissions: item.key => item}
+  database    = each.value.database
+  user        = each.value.user
+  privileges  = each.value.privileges
+  roles       = each.value.roles
 }

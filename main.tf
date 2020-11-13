@@ -22,6 +22,7 @@ locals {
     for role in local.roles: [
       for permission in try(role.permissions, []):
       merge(permission, {
+        key  = "${role.name}-${permission.database}"
         role = role.name
       })
     ]
@@ -31,6 +32,7 @@ locals {
     for user in local.users: [
       for permission in try(user.permissions, []):
       merge(permission, {
+        key  = "${user.name}-${permission.database}"
         user = user.name
       })
     ]

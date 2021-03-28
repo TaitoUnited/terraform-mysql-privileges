@@ -15,13 +15,16 @@
  */
 
 terraform {
-  required_version = ">= 0.13"
   required_providers {
     mysql = {
-      source = "terraform-providers/mysql"
+      source = "winebarrel/mysql"
+      version = "=1.9.0-p8"
     }
     random = {
       source = "hashicorp/random"
+      version = "=3.1.0"
     }
   }
+
+  required_version = ">= 0.14"
 }

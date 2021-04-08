@@ -20,7 +20,7 @@ locals {
 
   rolePermissions = flatten([
     for role in local.roles: [
-      for permission in try(role.permissions, []):
+      for permission in coalesce(role.permissions, []):
       merge(permission, {
         key  = "${role.name}-${permission.database}"
         role = role.name
@@ -30,7 +30,7 @@ locals {
 
   userPermissions = flatten([
     for user in local.users: [
-      for permission in try(user.permissions, []):
+      for permission in coalesce(user.permissions, []):
       merge(permission, {
         key  = "${user.name}-${permission.database}"
         user = user.name
